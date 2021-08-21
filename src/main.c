@@ -16,8 +16,10 @@ int save_args(t_all *all, int argc, char **argv)
 	all->args->t_die = ft_atoi(argv[2]);
 	all->args->t_eat = ft_atoi(argv[3]);
 	all->args->t_sleep = ft_atoi(argv[4]);
+	all->args->n_eat = -1;
 	if (argc == 6)
 		all->args->n_eat = ft_atoi(argv[5]);
+
 	if (!check_args(all, argc))
 	{
 		printf("Invalid argument\n");
@@ -36,7 +38,11 @@ int main(int argc, char **argv)
 	{
 		if (!(save_args(&all, argc, argv)))
 			return (1);
-		start_threads(&all);
+		if (!start_threads(&all))
+		{
+			printf("Malloc error\n");
+			return (1);
+		}
 	}
 	else
 	{

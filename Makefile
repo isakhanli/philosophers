@@ -1,8 +1,8 @@
-NAME = phile
+NAME = philo
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -I. -pthread -g
+CFLAGS = -Wall -Wextra -Werror -I. -pthread -g  -fsanitize=thread
 
 SRC = 	./src/main.c\
 		./src/utils.c\
