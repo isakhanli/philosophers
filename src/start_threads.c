@@ -7,6 +7,9 @@ void	*handle_philosoper(void *arg)
 	philo = (t_philo *)arg;
 	while (1)
 	{
+		if (philo->all->args->n_eat != -1
+			&& philo->n_eat >= philo->all->args->n_eat)
+			return (NULL);
 		if (!check_status(philo))
 			return (NULL);
 		handle_eating(philo);
@@ -66,6 +69,8 @@ void init_mutexes(t_all *all)
 
 int		start_threads(t_all *all)
 {
+	all->status = 1;
+	all->start_time = get_time();
 	all->philos = (t_philo *)malloc(sizeof(t_philo) * all->args->n_philos);
 	if (!all->philos)
 		return free_and_return(all);

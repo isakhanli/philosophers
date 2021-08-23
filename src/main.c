@@ -55,8 +55,6 @@ int main(int argc, char **argv)
 	t_args args;
 
 	all.args = &args;
-	all.status = 1;
-	all.start_time = get_time();
 	if (argc == 5 || argc == 6)
 	{
 		if (!(save_args(&all, argc, argv)))

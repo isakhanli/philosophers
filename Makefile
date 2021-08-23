@@ -2,7 +2,7 @@ NAME = philo
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -I. -pthread -g
+CFLAGS = -Wall -Wextra -Werror -I. -g
 
 SRC = 	./src/main.c\
 		./src/utils.c\

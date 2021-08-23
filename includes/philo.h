@@ -10,6 +10,7 @@
 # define TRUE 1
 # define FALSE 0
 # define MALLOC_ERROR 1
+# define OK 1
 
 typedef struct	s_philo
 {

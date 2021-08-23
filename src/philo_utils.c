@@ -3,8 +3,7 @@
 int check_status(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->all->mtx_status);
-	if (!philo->all->status || (philo->all->args->n_eat != -1
-		&& philo->n_eat >= philo->all->args->n_eat))
+	if (philo->all->status != OK)
 	{
 		pthread_mutex_unlock(&philo->all->mtx_status);
 		return (0);
@@ -21,20 +20,20 @@ void 	handle_sleep(t_all *all, int ms_to_sleep)
 	while ((get_time() - start) < ms_to_sleep)
 	{
 		pthread_mutex_lock(&all->mtx_status);
-		if (!all->status)
+		if (all->status != OK)
 		{
 			pthread_mutex_unlock(&all->mtx_status);
 			return ;
 		}
 		pthread_mutex_unlock(&all->mtx_status);
-		usleep(100);
+		usleep(40);
 	}
 }
 
 void 	handle_message(t_philo *philo, char *msg)
 {
 	pthread_mutex_lock(&philo->all->mtx_message);
-	if (philo->all->status)
+	if (philo->all->status == OK)
 		printf("%lld %d %s\n", get_time() - philo->all->start_time,
 			   philo->id + 1, msg);
 	pthread_mutex_unlock(&philo->all->mtx_message);
