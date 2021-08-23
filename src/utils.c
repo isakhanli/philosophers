@@ -42,3 +42,30 @@ long long get_time(void)
 		return -1;
 	return ((cur_time.tv_sec * 1000) + (cur_time.tv_usec / 1000));
 }
+
+int free_and_return(t_all *all)
+{
+	if (all->philos)
+		free(all->philos);
+	if (all->forks)
+		free(all->forks);
+	all->error = MALLOC_ERROR;
+	return (0);
+}
+
+void 	destroy_all(t_all *all)
+{
+	int i;
+
+	i = -1;
+	while (++i < all->args->n_philos)
+		pthread_detach(all->philos[i].pth);
+	i = -1;
+	while (++i < all->args->n_philos)
+		pthread_mutex_destroy(&all->forks[i]);
+	if (all->philos)
+		free(all->philos);
+	if (all->forks)
+		free(all->forks);
+}
+

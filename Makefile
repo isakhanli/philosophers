@@ -2,10 +2,11 @@ NAME = philo
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -I. -pthread -g  -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -I. -pthread -g
 
 SRC = 	./src/main.c\
 		./src/utils.c\
+		./src/philo_utils.c\
 		./src/start_threads.c\
 		./src/monitoring.c\
 
