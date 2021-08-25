@@ -59,10 +59,9 @@ void 	destroy_all(t_all *all)
 
 	i = -1;
 	while (++i < all->args->n_philos)
-		pthread_detach(all->philos[i].pth);
-	i = -1;
-	while (++i < all->args->n_philos)
 		pthread_mutex_destroy(&all->forks[i]);
+	pthread_mutex_destroy(&all->mtx_message);
+	pthread_mutex_destroy(&all->mtx_status);
 	if (all->philos)
 		free(all->philos);
 	if (all->forks)

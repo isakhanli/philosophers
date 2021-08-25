@@ -1,14 +1,14 @@
 #include "../includes/philo.h"
 
-int check_status(t_philo *philo)
+int check_status(t_all *all)
 {
-	pthread_mutex_lock(&philo->all->mtx_status);
-	if (philo->all->status != OK)
+	pthread_mutex_lock(&all->mtx_status);
+	if (all->status != 1)
 	{
-		pthread_mutex_unlock(&philo->all->mtx_status);
+		pthread_mutex_unlock(&all->mtx_status);
 		return (0);
 	}
-	pthread_mutex_unlock(&philo->all->mtx_status);
+	pthread_mutex_unlock(&all->mtx_status);
 	return (1);
 }
 
@@ -50,11 +50,8 @@ void	handle_eating(t_philo *philo)
 	handle_sleep(philo->all, philo->all->args->t_eat);
 	pthread_mutex_unlock(philo->l_fork);
 	pthread_mutex_unlock(philo->r_fork);
+	pthread_mutex_lock(&philo->all->mtx_eating);
 	if (philo->all->args->n_eat != -1)
-	{
-		pthread_mutex_lock(&philo->all->mtx_n_all_eats);
-		philo->all->n_all_eats++;
 		philo->n_eat++;
-		pthread_mutex_unlock(&philo->all->mtx_n_all_eats);
-	}
+	pthread_mutex_unlock(&philo->all->mtx_eating);
 }

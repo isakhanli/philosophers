@@ -9,6 +9,7 @@
 
 # define TRUE 1
 # define FALSE 0
+# define DEAD 0
 # define MALLOC_ERROR 1
 # define OK 1
 
@@ -45,8 +46,7 @@ typedef struct	s_all
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		mtx_message;
 	pthread_mutex_t		mtx_status;
-	pthread_mutex_t		mtx_n_all_eats;
-
+	pthread_mutex_t		mtx_eating;
 }				t_all;
 
 long long	get_time();
@@ -54,11 +54,12 @@ int			ft_atoi(char *str);
 int			start_threads(t_all *all);
 void		*monitor(void *arg);
 void		handle_message(t_philo *philo, char *msg);
-int			check_status(t_philo *philo);
+int			check_status(t_all *all);
 void		handle_sleep(t_all *all, int ms_to_sleep);
 void		handle_message(t_philo *philo, char *msg);
 int			free_and_return(t_all *all);
 void		destroy_all(t_all *all);
 void		handle_eating(t_philo *philo);
+void		*control_philos(t_all *all);
 
 #endif

@@ -10,14 +10,14 @@ void	*handle_philosoper(void *arg)
 		if (philo->all->args->n_eat != -1
 			&& philo->n_eat >= philo->all->args->n_eat)
 			return (NULL);
-		if (!check_status(philo))
+		if (!check_status(philo->all))
 			return (NULL);
 		handle_eating(philo);
-		if (!check_status(philo))
+		if (!check_status(philo->all))
 			return (NULL);
 		handle_message(philo, "is sleeping");
 		handle_sleep(philo->all, philo->all->args->t_sleep);
-		if (!check_status(philo))
+		if (!check_status(philo->all))
 			return (NULL);
 		handle_message(philo, "is thinking");
 	}
@@ -64,7 +64,7 @@ void init_mutexes(t_all *all)
 		pthread_mutex_init(&all->forks[i], NULL);
 	pthread_mutex_init(&all->mtx_message, NULL);
 	pthread_mutex_init(&all->mtx_status, NULL);
-	pthread_mutex_init(&all->mtx_n_all_eats, NULL);
+	pthread_mutex_init(&all->mtx_eating, NULL);
 }
 
 int		start_threads(t_all *all)
@@ -80,8 +80,13 @@ int		start_threads(t_all *all)
 		return free_and_return(all);
 	init_mutexes(all);
 	create_philos(all);
-	pthread_create(&all->monitor, NULL, monitor, all);
-	pthread_join(all->monitor, NULL);
+	control_philos(all);
+	int i = -1;
+	while (++i < all->args->n_philos)
+	{
+		pthread_mutex_unlock(&all->forks[0]);
+		pthread_join(all->philos[i].pth, NULL);
+	}
 	destroy_all(all);
 	return (1);
 }
