@@ -1,14 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dchin <dchin@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/08/26 18:18:07 by dchin             #+#    #+#             */
+/*   Updated: 2021/08/26 18:18:09 by dchin            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philo.h"
 
-static int		ft_isspace(char c)
+static int	ft_isspace(char c)
 {
-	if (c == '\n' || c == '\t' || c == '\v' || c == '\f' ||
-	c == '\r' || c == ' ')
+	if (c == '\n' || c == '\t' || c == '\v' || c == '\f'
+		|| c == '\r' || c == ' ')
 		return (1);
 	return (0);
 }
 
-int				ft_atoi(char *str)
+int	ft_atoi(char *str)
 {
 	long	result;
 	int		i;
@@ -34,37 +46,36 @@ int				ft_atoi(char *str)
 	return ((is_neg * result));
 }
 
-long long get_time(void)
+long long	get_time(void)
 {
 	struct timeval	cur_time;
 
-	if (gettimeofday(&cur_time, NULL) == -1)
-		return -1;
+	gettimeofday(&cur_time, NULL);
 	return ((cur_time.tv_sec * 1000) + (cur_time.tv_usec / 1000));
 }
 
-int free_and_return(t_all *all)
+int	free_and_return(t_all *all, int error)
 {
 	if (all->philos)
 		free(all->philos);
 	if (all->forks)
 		free(all->forks);
-	all->error = MALLOC_ERROR;
+	all->error = error;
 	return (0);
 }
 
-void 	destroy_all(t_all *all)
+void	ft_clean(t_all *all)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < all->args->n_philos)
 		pthread_mutex_destroy(&all->forks[i]);
 	pthread_mutex_destroy(&all->mtx_message);
 	pthread_mutex_destroy(&all->mtx_status);
+	pthread_mutex_destroy(&all->mtx_eating);
 	if (all->philos)
 		free(all->philos);
 	if (all->forks)
 		free(all->forks);
 }
-

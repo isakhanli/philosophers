@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dchin <dchin@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/08/26 18:18:00 by dchin             #+#    #+#             */
+/*   Updated: 2021/08/26 18:18:02 by dchin            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philo.h"
 
-int check_status(t_all *all)
+int	check_status(t_all *all)
 {
 	pthread_mutex_lock(&all->mtx_status);
-	if (all->status != 1)
+	if (all->status != OK)
 	{
 		pthread_mutex_unlock(&all->mtx_status);
 		return (0);
@@ -12,9 +24,9 @@ int check_status(t_all *all)
 	return (1);
 }
 
-void 	handle_sleep(t_all *all, int ms_to_sleep)
+void	handle_sleep(t_all *all, int ms_to_sleep)
 {
-	long long start;
+	long long	start;
 
 	start = get_time();
 	while ((get_time() - start) < ms_to_sleep)
@@ -26,11 +38,11 @@ void 	handle_sleep(t_all *all, int ms_to_sleep)
 			return ;
 		}
 		pthread_mutex_unlock(&all->mtx_status);
-		usleep(40);
+		usleep(100);
 	}
 }
 
-void 	handle_message(t_philo *philo, char *msg)
+void	handle_message(t_philo *philo, char *msg)
 {
 	pthread_mutex_lock(&philo->all->mtx_message);
 	if (philo->all->status == OK)

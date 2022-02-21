@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dchin <dchin@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/08/26 18:17:56 by dchin             #+#    #+#             */
+/*   Updated: 2021/08/26 18:17:58 by dchin            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philo.h"
 
 int	check_args(t_all *all, int argc)
@@ -12,8 +24,8 @@ int	check_args(t_all *all, int argc)
 
 int	check_argv(int argc, char **argv)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (++i < argc)
@@ -28,7 +40,7 @@ int	check_argv(int argc, char **argv)
 	return (1);
 }
 
-int save_args(t_all *all, int argc, char **argv)
+int	save_args(t_all *all, int argc, char **argv)
 {
 	all->args->n_philos = ft_atoi(argv[1]);
 	all->args->t_die = ft_atoi(argv[2]);
@@ -40,7 +52,6 @@ int save_args(t_all *all, int argc, char **argv)
 		all->args->n_eat = ft_atoi(argv[5]);
 		all->n_all_eats = 0;
 	}
-
 	if (!check_args(all, argc) || !check_argv(argc, argv))
 	{
 		printf("Invalid argument\n");
@@ -49,10 +60,21 @@ int save_args(t_all *all, int argc, char **argv)
 	return (1);
 }
 
-int main(int argc, char **argv)
+int	handle_error(int err_no)
 {
-	t_all all;
-	t_args args;
+	if (err_no == MALLOC_ERROR)
+		printf("Malloc error occured\n");
+	else if (err_no == PTHREAD_ERROR)
+		printf("Pthread error occured\n");
+	else if (err_no == MUTEX_ERROR)
+		printf("Mutex error occured\n");
+	return (1);
+}
+
+int	main(int argc, char **argv)
+{
+	t_all	all;
+	t_args	args;
 
 	all.args = &args;
 	if (argc == 5 || argc == 6)
@@ -60,10 +82,7 @@ int main(int argc, char **argv)
 		if (!(save_args(&all, argc, argv)))
 			return (1);
 		if (!start_threads(&all))
-		{
-			printf("Malloc error\n");
-			return (1);
-		}
+			return (handle_error(all.error));
 	}
 	else
 	{

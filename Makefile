@@ -2,13 +2,13 @@ NAME = philo
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -I. -pthread -g
+CFLAGS = -Wall -Wextra -Werror -I.
 
 SRC = 	./src/main.c\
 		./src/utils.c\
 		./src/philo_utils.c\
 		./src/start_threads.c\
-		./src/controlling.c\
+		./src/controller.c\
 
 OBJS = $(SRC:.c=.o)
 
